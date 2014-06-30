@@ -26,3 +26,28 @@
   tags:
   - extract
 
+- name: Touch RELEASE file
+  copy: src=RELEASE dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}
+  tags:
+  - bugfix
+
+- name: Fix bug in classpath
+  lineinfile: dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}/bin/compute-classpath.sh backup=yes regexp="(^\s+ASSEMBLY_JAR=`ls \"\$FWDIR\")\/jars(\/spark-assembly\*\.jar`)" backrefs=yes line="\1\2"
+  tags:
+  - bugfix
+
+- name: Add hadoop stuff to spark classpath
+  lineinfile: dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}/bin/compute-classpath.sh regexp="{{ item }}" insertafter="\s+ASSEMBLY_JAR=`ls \"\$FWDIR\"\/spark-assembly\*\.jar`" line="{{ item }}"
+  with_items:
+    - 'CLASSPATH=\"$CLASSPATH:$SPARK_HOME/lib/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/hdfs/lib/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/hdfs/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/yarn/lib/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/yarn/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/mapreduce/lib/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/mapreduce/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/common/*:$HADOOP_PREFIX/share/hadoop/common/lib/*\"'
+    - '# Adding hadoop classpath references here'
+  tags:
+  - bugfix
+

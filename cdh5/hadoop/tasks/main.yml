@@ -53,14 +53,14 @@
   - "{{ install_dir }}/var/lib/hadoop-yarn/cache/{{ ansible_env.USER }}/nm-local-dir"
   - "{{ install_dir }}/var/log/hadoop-yarn/containers"
   tags:
-  - dirs
+  - configs
 
 - name: Fix Hadoop-config.sh
   lineinfile: dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/libexec/hadoop-config.sh backup=yes regexp="^\s+(export JAVA_HOME=)\(\$.*$" backrefs=yes line="\1$(/usr/libexec/java_home)"
   tags:
-  - configs
+  - bugfix
 
 - name: Fix Hadoop-config.sh part 2
   lineinfile: dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/libexec/hadoop-config.sh backup=yes regexp="^\s+(export JAVA_HOME=)\(/.*$" backrefs=yes line="\1/Library/Java/Home"
   tags:
-  - configs
+  - bugfix

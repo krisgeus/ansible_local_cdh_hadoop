@@ -17,3 +17,5 @@ After that the ansible playbook is started which will:
 - configures the hadoop and hive config files
 - fixes a few lines in hadoop-config.sh to make sure JAVA_HOME is set correctly
 
+TODO: 
+
