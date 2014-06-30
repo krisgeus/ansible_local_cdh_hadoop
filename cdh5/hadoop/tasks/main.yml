@@ -1,0 +1,66 @@
+---
+- name: Check if downloadable archive exists
+  stat: path={{ downloads }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}.tar.gz
+  register: archive
+
+- name: Get Hadoop binary
+  get_url: url=http://archive.cloudera.com/cdh{{ cdh_major }}/cdh/{{ cdh_major }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}.tar.gz dest={{ downloads }}
+  when: archive.stat.exists == false
+  tags:
+  - download
+
+- name: Check if unpacked archive exists
+  stat: path={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}
+  register: unpacked
+
+- name: Unarchive Hadoop binary
+  unarchive: copy=no src={{ downloads }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}.tar.gz dest={{ install_dir }}
+  when: unpacked.stat.exists == false
+  tags:
+  - extract
+
+- name: Bash profile generation
+  template: src=profile/bash_profile_hadoop.tmpl dest={{ install_dir }}/.bash_profile_hadoop
+  tags:
+  - profile
+
+- name: Copy local Hadoop config
+  copy: src=configs/conf.local dest={{ install_dir }}
+  tags:
+  - configs
+
+- name: Copy pseudo Hadoop config
+  copy: src=configs/conf.pseudo dest={{ install_dir }}
+  tags:
+  - configs
+
+- name: Copy pseudo Hadoop config templates
+  template: src=configs/conf.pseudo/{{ item }} dest={{ install_dir }}/conf.pseudo/{{ item }}
+  with_items:
+  - hdfs-site.xml
+  - mapred-site.xml
+  - yarn-site.xml
+  tags:
+  - configs
+
+- name: Create directories for pseudo cluster
+  file: path={{ item }} state=directory
+  with_items:
+  - "{{ install_dir }}/var/lib/hadoop-hdfs/cache/{{ ansible_env.USER }}/dfs/name"
+  - "{{ install_dir }}/var/lib/hadoop-hdfs/cache/{{ ansible_env.USER }}/dfs/namesecondary"
+  - "{{ install_dir }}/var/lib/hadoop-hdfs/cache/{{ ansible_env.USER }}/dfs/data"
+  - "{{ install_dir }}/var/lib/hadoop-mapreduce/cache/{{ ansible_env.USER }}/tasks"
+  - "{{ install_dir }}/var/lib/hadoop-yarn/cache/{{ ansible_env.USER }}/nm-local-dir"
+  - "{{ install_dir }}/var/log/hadoop-yarn/containers"
+  tags:
+  - dirs
+
+- name: Fix Hadoop-config.sh
+  lineinfile: dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/libexec/hadoop-config.sh backup=yes regexp="^\s+(export JAVA_HOME=)\(\$.*$" backrefs=yes line="\1$(/usr/libexec/java_home)"
+  tags:
+  - configs
+
+- name: Fix Hadoop-config.sh part 2
+  lineinfile: dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/libexec/hadoop-config.sh backup=yes regexp="^\s+(export JAVA_HOME=)\(/.*$" backrefs=yes line="\1/Library/Java/Home"
+  tags:
+  - configs

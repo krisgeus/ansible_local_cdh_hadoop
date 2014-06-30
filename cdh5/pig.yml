@@ -1,0 +1,10 @@
+---
+- hosts: local
+  connection: local
+
+  vars_files:
+  - ../vars/common.yml
+
+  tasks:
+  - include: pig/tasks/main.yml
+

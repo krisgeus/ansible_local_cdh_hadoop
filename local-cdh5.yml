@@ -1,0 +1,20 @@
+---
+- name: Install local CDH
+  hosts: local
+  connection: local
+
+  vars_files:
+    - vars/common.yml
+
+  tasks:
+    - name: Create Ansible downloads directory
+      file: path={{ downloads }} state=directory
+
+    - name: Create install directory
+      file: path={{ install_dir }} state=directory
+
+- include: cdh5/hadoop.yml
+- include: cdh5/hive.yml
+- include: cdh5/pig.yml
+- include: cdh5/spark.yml
+- include: cdh5/mahout.yml

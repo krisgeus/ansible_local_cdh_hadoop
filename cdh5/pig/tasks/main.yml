@@ -1,0 +1,21 @@
+---
+- name: Check if downloadable archive exists
+  stat: path={{ downloads }}/pig-{{ pig_version }}-cdh{{ cdh_version }}.tar.gz
+  register: archive
+
+- name: Get Pig binary
+  get_url: url=http://archive.cloudera.com/cdh{{ cdh_major }}/cdh/{{ cdh_major }}/pig-{{ pig_version }}-cdh{{ cdh_version }}.tar.gz dest={{ downloads }}
+  when: archive.stat.exists == false
+  tags:
+  - download
+
+- name: Check if unpacked archive exists
+  stat: path={{ install_dir }}/pig-{{ pig_version }}-cdh{{ cdh_version }}
+  register: unpacked
+
+- name: Unarchive Pig binary
+  unarchive: copy=no src={{ downloads }}/pig-{{ pig_version }}-cdh{{ cdh_version }}.tar.gz dest={{ install_dir }}
+  when: unpacked.stat.exists == false 
+  tags:
+  - extract
+

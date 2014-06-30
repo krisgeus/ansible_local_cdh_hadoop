@@ -1,0 +1,28 @@
+---
+- name: Check if downloadable archive exists
+  stat: path={{ downloads }}/spark-{{ spark_version }}-cdh{{ cdh_version }}.tar.gz
+  register: archive
+
+
+- name: Get Spark binary
+  get_url: url=http://archive.cloudera.com/cdh{{ cdh_major }}/cdh/{{ cdh_major }}/spark-{{ spark_version }}-cdh{{ cdh_version }}.tar.gz dest={{ downloads }}
+  when: archive.stat.exists == false
+  tags:
+  - download
+
+- name: Check if unpacked archive exists
+  stat: path={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}
+  register: unpacked
+
+- name: Create spark directory
+  file: path={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }} state=directory
+  when: unpacked.stat.exists == false
+  tags:
+  - extract
+
+- name: Unarchive Spark binary
+  unarchive: copy=no src={{ downloads }}/spark-{{ spark_version }}-cdh{{ cdh_version }}.tar.gz dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}
+  when: unpacked.stat.exists == false
+  tags:
+  - extract
+

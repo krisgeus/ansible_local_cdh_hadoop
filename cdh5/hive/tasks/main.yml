@@ -1,0 +1,50 @@
+---
+- name: Check if downloadable archive exists
+  stat: path={{ downloads }}/hive-{{ hive_version }}-cdh{{ cdh_version }}.tar.gz
+  register: archive
+
+- name: Get Hive binary
+  get_url: url=http://archive.cloudera.com/cdh{{ cdh_major }}/cdh/{{ cdh_major }}/hive-{{ hive_version }}-cdh{{ cdh_version }}.tar.gz dest={{ downloads }}
+  when: archive.stat.exists == false
+  tags:
+  - download
+
+- name: Check if unpacked archive exists
+  stat: path={{ install_dir }}/hive-{{ hive_version }}-cdh{{ cdh_version }}
+  register: unpacked
+
+- name: Unarchive Hive binary
+  unarchive: copy=no src={{ downloads }}/hive-{{ hive_version }}-cdh{{ cdh_version }}.tar.gz dest={{ install_dir }}
+  when: unpacked.stat.exists == false
+  tags:
+  - extract
+
+- name: Copy local Hive config
+  copy: src=configs/conf.local dest={{ install_dir }}
+  tags:
+  - configs
+
+- name: Copy local Hive config templates
+  template: src=configs/conf.local/{{ item }} dest={{ install_dir }}/conf.local/{{ item }}
+  with_items:
+  - hive-site.xml
+  tags:
+  - configs
+
+- name: Create Hive warehouse directory for local cluster
+  file: path={{ install_dir }}/user/hive/warehouse state=directory
+  tags:
+  - dirs
+
+- name: Copy Hive pseudo config
+  copy: src=configs/conf.pseudo dest={{ install_dir }}
+  tags:
+  - configs
+
+- name: Copy pseudo Hive config templates
+  template: src=configs/conf.pseudo/{{ item }} dest={{ install_dir }}/conf.pseudo/{{ item }}
+  with_items:
+  - hive-site.xml
+  tags:
+  - configs
+

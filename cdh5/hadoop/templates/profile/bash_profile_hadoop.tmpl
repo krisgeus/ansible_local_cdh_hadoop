@@ -1,0 +1,27 @@
+alias switch_local_cdh{{ cdh_major }}='export JAVA_HOME=$(/usr/libexec/java_home -v {{ java_version }})
+  export HADOOP_PREFIX={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }};
+  export FLUME_PREFIX={{ install_dir }}/apache-flume-{{ flume_version }}-cdh{{ cdh_version }}-bin;
+  export MAHOUT_PREFIX={{ install_dir }}/mahout-{{ mahout_version }}-cdh{{ cdh_version }};
+  export HADOOP_COMMON_HOME=$HADOOP_PREFIX;
+  export HADOOP_HDFS_HOME=$HADOOP_PREFIX;
+  export HADOOP_MAPRED_HOME=$HADOOP_PREFIX;
+  export HADOOP_YARN_HOME=$HADOOP_PREFIX;
+  export SPARK_HOME={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }};
+  export HIVE_HOME={{ install_dir }}/hive-{{ hive_version }}-cdh{{ cdh_version }};
+  export PIG_HOME={{ install_dir }}/pig-{{ pig_version }}-cdh{{ cdh_version }};
+  export PATH=$HADOOP_PREFIX/bin:$MAHOUT_PREFIX/bin:$FLUME_PREFIX/bin:$SPARK_HOME/bin:$HIVE_HOME/bin:$PIG_HOME/bin:$PATH;
+  export HADOOP_CONF_DIR={{ install_dir }}/conf.local;
+  export HIVE_CONF_DIR=$HADOOP_CONF_DIR;'
+
+alias switch_pseudo_cdh{{ cdh_major }}='export JAVA_HOME=$(/usr/libexec/java_home -v {{ java_version }})
+  export HADOOP_PREFIX={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }};
+  export FLUME_PREFIX={{ install_dir }}/apache-flume-{{ flume_version }}-cdh{{ cdh_version }}-bin;
+  export MAHOUT_PREFIX={{ install_dir }}/mahout-{{ mahout_version }}-cdh{{ cdh_version }};
+  export HADOOP_COMMON_HOME=$HADOOP_PREFIX;
+  export HADOOP_HDFS_HOME=$HADOOP_PREFIX;
+  export HADOOP_MAPRED_HOME=$HADOOP_PREFIX;
+  export HADOOP_YARN_HOME=$HADOOP_PREFIX;
+  export HIVE_HOME={{ install_dir }}/hive-{{ hive_version }}-cdh{{ cdh_version }};
+  export PATH=$HADOOP_PREFIX/sbin:$HADOOP_PREFIX/bin:$MAHOUT_PREFIX/bin:$FLUME_PREFIX/bin:$HIVE_HOME/bin:$PATH;
+  export HADOOP_CONF_DIR={{ install_dir }}/conf.pseudo;
+  export HIVE_CONF_DIR=$HADOOP_CONF_DIR;'
