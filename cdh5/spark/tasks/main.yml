@@ -45,6 +45,7 @@
   lineinfile: dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}/bin/compute-classpath.sh regexp="{{ item }}" insertafter="\s+ASSEMBLY_JAR=`ls \"\$FWDIR\"\/spark-assembly\*\.jar`" line="{{ item }}"
   with_items:
     - 'CLASSPATH=\"$CLASSPATH:$SPARK_HOME/lib/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HIVE_HOME/lib/*\"'
     - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/hdfs/lib/*\"'
     - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/hdfs/*\"'
     - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/yarn/lib/*\"'
@@ -60,6 +61,7 @@
   lineinfile: dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}/bin/compute-classpath.sh regexp="{{ item }}" insertafter="CLASSPATH=\"\$CLASSPATH:\$ASSEMBLY_JAR\"" line="{{ item }}"
   with_items:
     - 'CLASSPATH=\"$CLASSPATH:$SPARK_HOME/lib/*\"'
+    - 'CLASSPATH=\"$CLASSPATH:$HIVE_HOME/lib/*\"'
     - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/hdfs/lib/*\"'
     - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/hdfs/*\"'
     - 'CLASSPATH=\"$CLASSPATH:$HADOOP_PREFIX/share/hadoop/yarn/lib/*\"'
