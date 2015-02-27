@@ -3,12 +3,12 @@ install_dir: /tmp/hadoop/cdh5
 
 # versions
 cdh_major: 5
-cdh_version: 5.2.0
+cdh_version: 5.3.0
 hadoop_version: 2.5.0
 flume_version: 1.5.0
 mahout_version: 0.9
 hive_version: 0.13.1
 pig_version: 0.12.0
-spark_version: 1.1.0
+spark_version: 1.2.0
 java_version: 1.7
 

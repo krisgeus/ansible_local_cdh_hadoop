@@ -68,7 +68,8 @@
         $HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*,
         $HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*,
         $HADOOP_YARN_HOME/share/hadoop/yarn/*,
-        $HADOOP_YARN_HOME/share/hadoop/yarn/lib/*
+        $HADOOP_YARN_HOME/share/hadoop/yarn/lib/*,
+        $HIVE_HOME/lib/*
      </value>
   </property>
 </configuration>
