@@ -4,7 +4,7 @@
   register: archive
 
 - name: Get Hadoop binary
-  get_url: url=http://archive.cloudera.com/cdh{{ cdh_major }}/cdh/{{ cdh_major }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}.tar.gz dest={{ downloads }}
+  get_url: url=http://archive-primary.cloudera.com/cdh{{ cdh_major }}/cdh/{{ cdh_major }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}.tar.gz dest={{ downloads }}
   when: archive.stat.exists == false
   tags:
   - download
