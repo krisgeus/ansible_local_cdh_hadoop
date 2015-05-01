@@ -64,3 +64,44 @@
   lineinfile: dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/libexec/hadoop-config.sh backup=yes regexp="^\s+(export JAVA_HOME=)\(/.*$" backrefs=yes line="\1/Library/Java/Home"
   tags:
   - bugfix
+
+- name: Get latest snappy jar to fix snappy OSX bug
+  get_url: url=https://oss.sonatype.org/content/repositories/releases/org/xerial/snappy/snappy-java/1.1.1.7/snappy-java-1.1.1.7.jar dest={{ downloads }}
+  tags:
+  - snappyfix
+
+- name: Check if snappy jar with bug exists in common/lib
+  stat: path={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/common/lib/snappy-java-1.0.4.1.jar
+  register: snappy_common
+  tags:
+  - snappyfix
+
+- name: Check if snappy jar with bug exists in tools/lib
+  stat: path={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/tools/lib/snappy-java-1.0.4.1.jar
+  register: snappy_tools
+  tags:
+  - snappyfix
+
+- name: Remove buggy snappy jar from common/lib
+  file: name={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/common/lib/snappy-java-1.0.4.1.jar state=absent
+  when: snappy_common.stat.exists == true
+  tags:
+  - snappyfix
+
+- name: Remove buggy snappy jar from tools/lib
+  file: name={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/tools/lib/snappy-java-1.0.4.1.jar state=absent
+  when: snappy_tools.stat.exists == true
+  tags:
+  - snappyfix
+
+- name: Add latest version of snappy jar to common/lib
+  copy: src={{ downloads }}/snappy-java-1.1.1.7.jar dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/common/lib/
+  when: snappy_common.stat.exists == true
+  tags:
+  - snappyfix
+
+- name: Add latest version of snappy jar to tools/lib
+  copy: src={{ downloads }}/snappy-java-1.1.1.7.jar dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/tools/lib/
+  when: snappy_tools.stat.exists == true
+  tags:
+  - snappyfix
