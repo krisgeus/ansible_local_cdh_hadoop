@@ -5,7 +5,7 @@
 
 
 - name: Get Spark binary
-  get_url: url=http://archive.cloudera.com/cdh{{ cdh_major }}/cdh/{{ cdh_major }}/spark-{{ spark_version }}-cdh{{ cdh_version }}.tar.gz dest={{ downloads }}
+  get_url: url=http://archive.cloudera.com/cdh{{ cdh_major }}/cdh/{{ cdh_major }}/spark-{{ spark_version }}-cdh{{ cdh_version }}.tar.gz dest={{ downloads }} timeout=100
   when: archive.stat.exists == false
   tags:
   - download
