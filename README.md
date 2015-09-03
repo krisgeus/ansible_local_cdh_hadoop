@@ -3,7 +3,7 @@ ansible_local_cdh_hadoop
 
 Create a local working CDH5 Hadoop with ansible scripts
 
-These ansible scripts accompany [this GoDataDriven blog](blog.godatadriven.com/automated-cdh5-hadoop-on-your-laptop-with-ansible.html) about installing a local CDH5 hadoop in local and pseudo distributed mode.
+These ansible scripts accompany [this GoDataDriven blog](http://blog.godatadriven.com/automated-cdh5-hadoop-on-your-laptop-with-ansible.html) about installing a local CDH5 hadoop in local and pseudo distributed mode.
 
 If not done yet, install ansible by e.g.
 
