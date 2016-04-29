@@ -17,4 +17,4 @@
 - include: cdh5/hive.yml
 - include: cdh5/pig.yml
 - include: cdh5/spark.yml
-- include: cdh5/mahout.yml
+# - include: cdh5/mahout.yml
