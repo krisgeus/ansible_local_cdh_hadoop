@@ -19,12 +19,12 @@
   tags:
   - extract
 
-- name: Copy RELEASE file
-  copy: src=RELEASE dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}
-  tags:
-  - bugfix
+# - name: Copy RELEASE file
+#   copy: src=RELEASE dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}
+#   tags:
+#   - bugfix
 
-- name: Add hadoop stuff to spark classpath (for spark 1.5)
+- name: Add hadoop stuff to spark classpath (for spark > 1.5)
   copy: src=spark-env.sh dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}/conf
   tags:
   - configs
