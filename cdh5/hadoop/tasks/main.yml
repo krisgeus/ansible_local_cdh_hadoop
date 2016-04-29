@@ -66,7 +66,7 @@
   - bugfix
 
 - name: Get latest snappy jar to fix snappy OSX bug
-  get_url: url=https://oss.sonatype.org/content/repositories/releases/org/xerial/snappy/snappy-java/1.1.1.7/snappy-java-1.1.1.7.jar dest={{ downloads }}  timeout=100
+  get_url: url=https://oss.sonatype.org/content/repositories/releases/org/xerial/snappy/snappy-java/{{ snappy_version }}/snappy-java-{{ snappy_version }}.jar dest={{ downloads }}  timeout=100
   tags:
   - snappyfix
 
@@ -95,13 +95,13 @@
   - snappyfix
 
 - name: Add latest version of snappy jar to common/lib
-  copy: src={{ downloads }}/snappy-java-1.1.1.7.jar dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/common/lib/
+  copy: src={{ downloads }}/snappy-java-{{ snappy_version }}.jar dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/common/lib/
   when: snappy_common.stat.exists == true
   tags:
   - snappyfix
 
 - name: Add latest version of snappy jar to tools/lib
-  copy: src={{ downloads }}/snappy-java-1.1.1.7.jar dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/tools/lib/
+  copy: src={{ downloads }}/snappy-java-{{ snappy_version }}.jar dest={{ install_dir }}/hadoop-{{ hadoop_version }}-cdh{{ cdh_version }}/share/hadoop/tools/lib/
   when: snappy_tools.stat.exists == true
   tags:
   - snappyfix
