@@ -1,0 +1,30 @@
+---
+- name: Check if downloadable archive exists
+  stat: path={{ downloads }}/zeppelin-{{ zeppelin_version }}-bin-all.tgz
+  register: archive
+
+- name: Get Zeppelin binary
+  get_url: url=http://home.apache.org/~moon/zeppelin/snapshots/zeppelin-{{ zeppelin_version }}-bin-all.tgz dest={{ downloads }} timeout=100
+  when: archive.stat.exists == false
+  tags:
+  - download
+
+- name: Check if unpacked archive exists
+  stat: path={{ install_dir }}/zeppelin-{{ zeppelin_version }}-bin-all
+  register: unpacked
+
+- name: Unarchive Zeppelin binary
+  unarchive: copy=no src={{ downloads }}/zeppelin-{{ zeppelin_version }}-bin-all.tgz dest={{ install_dir }}
+  when: unpacked.stat.exists == false
+  tags:
+  - extract
+
+- name: Add config env
+  copy: src=zeppelin-env.sh dest={{ install_dir }}/zeppelin-{{ zeppelin_version }}-bin-all/conf
+  tags:
+  - configs
+
+- name: Add config xml
+  copy: src=zeppelin-site.xml dest={{ install_dir }}/zeppelin-{{ zeppelin_version }}-bin-all/conf
+  tags:
+  - configs
