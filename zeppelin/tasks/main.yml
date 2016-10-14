@@ -4,7 +4,7 @@
   register: archive
 
 - name: Get Zeppelin binary
-  get_url: url=http://home.apache.org/~moon/zeppelin/snapshots/zeppelin-{{ zeppelin_version }}-bin-all.tgz dest={{ downloads }} timeout=100
+  get_url: url=http://apache.cs.uu.nl/zeppelin/zeppelin-{{ zeppelin_version }}/zeppelin-{{ zeppelin_version }}-bin-all.tgz dest={{ downloads }} timeout=100
   when: archive.stat.exists == false
   tags:
   - download
