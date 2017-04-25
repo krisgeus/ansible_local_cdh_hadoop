@@ -25,6 +25,6 @@
 #   - bugfix
 
 - name: Add hadoop stuff to spark classpath (for spark > 1.5)
-  copy: src=spark-env.sh dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}/conf
+  copy: src=spark/files/spark-env.sh dest={{ install_dir }}/spark-{{ spark_version }}-cdh{{ cdh_version }}/conf
   tags:
   - configs

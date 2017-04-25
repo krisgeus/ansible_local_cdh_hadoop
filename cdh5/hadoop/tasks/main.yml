@@ -20,22 +20,22 @@
   - extract
 
 - name: Bash profile generation
-  template: src=profile/bash_profile_hadoop.tmpl dest={{ install_dir }}/.bash_profile_hadoop
+  template: src=hadoop/templates/profile/bash_profile_hadoop.tmpl dest={{ install_dir }}/.bash_profile_hadoop
   tags:
   - profile
 
 - name: Copy local Hadoop config
-  copy: src=configs/conf.local dest={{ install_dir }}
+  copy: src=hadoop/files/configs/conf.local dest={{ install_dir }}
   tags:
   - configs
 
 - name: Copy pseudo Hadoop config
-  copy: src=configs/conf.pseudo dest={{ install_dir }}
+  copy: src=hadoop/files/configs/conf.pseudo dest={{ install_dir }}
   tags:
   - configs
 
 - name: Copy pseudo Hadoop config templates
-  template: src=configs/conf.pseudo/{{ item }} dest={{ install_dir }}/conf.pseudo/{{ item }}
+  template: src=hadoop/templates/configs/conf.pseudo/{{ item }} dest={{ install_dir }}/conf.pseudo/{{ item }}
   with_items:
   - hdfs-site.xml
   - mapred-site.xml
